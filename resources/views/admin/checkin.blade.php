@@ -17,15 +17,15 @@
 
 <div class="authentication-form mx-auto">
     <div class="logo-centered">
-        <h2><b>Pe<font color="#f05138">.</font></b></h2>
+        <h2><b>Miaw Pay<font color="#f05138">.</font></b></h2>
     </div>
-    <h3>Check-In/Out to Pe System</h3>
+    <h3>Check-In/Out to Miaw Pay</h3>
     <p class="text-center">Happy to see you again!</p>
     <p class="clearfix border border-time">
-      <span class="float-left" id="date"></span>  
-      <span class="float-right font-weight-bold" id="time"></span>  
+      <span class="float-left" id="date"></span>
+      <span class="float-right font-weight-bold" id="time"></span>
     </p>
-     
+
     @if($errors->any())
     <div class="alert bg-danger text-light alert-dismissible fade show" role="alert">
         @foreach ($errors->all() as $error)
@@ -77,9 +77,9 @@
 **/
 var interval = setInterval(function() {
     var momentNow = moment();
-    $('#date').html(momentNow.format('dddd').substring(0,3).toUpperCase() + ' - ' + momentNow.format('MMMM DD, YYYY'));  
+    $('#date').html(momentNow.format('dddd').substring(0,3).toUpperCase() + ' - ' + momentNow.format('MMMM DD, YYYY'));
     $('#time').html(momentNow.format('hh:mm:ss A'));
-    
+
     $('#time_in_input').val(momentNow.format('LT'));
 }, 100);
 $('#date_input').val(moment().format('YYYY-MM-DD'));
@@ -91,7 +91,7 @@ $(document).ready(function($) {
         let form_method = ($("#time_input").val() == "time_in") ? "POST" : "PUT";
         $("#method_input").val(form_method);
         form("#form",form_url);
-    }); 
-}); 
+    });
+});
 </script>
 @endsection

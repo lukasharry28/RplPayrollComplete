@@ -37,45 +37,95 @@
                   </div>
                 </a>
                 <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                        <div class="col-md-3 text-right">
+                        <b>NIK : </b>
+                        </div>
+                        <div class="col-md-9">
+                        <span>{{ $employee->nik }}</span>
+                        </div>
+                    </div>
+                </a>
+                <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Gender : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->gender }}</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Golongan Darah : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->gol_darah }}</span>
+                      </div>
+                    </div>
+                  </a>
+                <a class="list-group-item list-group-item-action flex-column align-items-start">
                   <div class="row">
                     <div class="col-md-3 text-right">
-                      <b>Email : </b>
+                      <b>Tanggal Lahir : </b>
                     </div>
                     <div class="col-md-9">
-                      <span>{{ $employee->email }}</span>
+                      <span>{{ $employee->tgl_lahir }}</span>
                     </div>
                   </div>
                 </a>
                 <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Tempat Lahir : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->tmp_lahir }}</span>
+                      </div>
+                    </div>
+                  </a>
+                <a class="list-group-item list-group-item-action flex-column align-items-start">
                   <div class="row">
                     <div class="col-md-3 text-right">
-                      <b>Phone : </b>
+                      <b>Status Nikah : </b>
                     </div>
                     <div class="col-md-9">
-                      <span>{{ $employee->phone }}</span>
+                      <span>{{ $employee->status_nikah }}</span>
                     </div>
                   </div>
                 </a>
                 <a class="list-group-item list-group-item-action flex-column align-items-start">
-                  <div class="row">
-                    <div class="col-md-3 text-right">
-                      <b>Birthdate : </b>
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Email : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->email }}</span>
+                      </div>
                     </div>
-                    <div class="col-md-9">
-                      <span>{{ $employee->birthdate }}</span>
+                  </a>
+                  <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Phone : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->phone }}</span>
+                      </div>
                     </div>
-                  </div>
-                </a>
-                <a class="list-group-item list-group-item-action flex-column align-items-start">
-                  <div class="row">
-                    <div class="col-md-3 text-right">
-                      <b>Gender : </b>
+                  </a>
+                  <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Status Kerja : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->status_kerja }}</span>
+                      </div>
                     </div>
-                    <div class="col-md-9">
-                      <span>{{ $employee->gender }}</span>
-                    </div>
-                  </div>
-                </a>
+                  </a>
                 <a class="list-group-item list-group-item-action flex-column align-items-start">
                   <div class="row">
                     <div class="col-md-3 text-right">
@@ -93,6 +143,46 @@
                       </div>
                       <div class="col-md-9">
                         <span>{{ $employee->salary }}</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Nomor Rekening : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->rekening->no_rekening}}</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Pajak : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->pajak->title}}</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Tunjangan : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->tunjangan->title}}</span>
+                      </div>
+                    </div>
+                  </a>
+                  <a class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="row">
+                      <div class="col-md-3 text-right">
+                        <b>Potongan : </b>
+                      </div>
+                      <div class="col-md-9">
+                        <span>{{ $employee->deduction->name}}</span>
                       </div>
                     </div>
                   </a>
@@ -125,21 +215,19 @@
                       @if(!is_null($employee->address))
                       <i class='ik ik-map-pin'></i> {{ $employee->address }}
                       @endif
-
-
                     </div>
                   </div>
                 </a>
                 <a class="list-group-item list-group-item-action flex-column align-items-start">
                   <div class="row">
                     <div class="col-md-3 text-right my-auto">
-                      <b>Publish : </b>
+                      <b>Status Aktif : </b>
                     </div>
                     <div class="col-md-9">
                       @if($employee->is_active)
-                      <span class="badge badge-pill badge-sm badge-success">Published</span>
+                      <span class="badge badge-pill badge-sm badge-success">Aktif</span>
                       @else
-                      <span class="badge badge-pill badge-sm badge-danger">Not yet</span>
+                      <span class="badge badge-pill badge-sm badge-danger">Non Aktif</span>
                       @endif
                     </div>
                   </div>

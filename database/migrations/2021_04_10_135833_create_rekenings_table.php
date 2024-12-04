@@ -16,6 +16,7 @@ class CreateRekeningsTable extends Migration
         Schema::create('rekenings', function (Blueprint $table) {
             $table->bigIncrements('id_rekening');
             $table->string('no_rekening');
+            $table->string('nama_pemilik');
             $table->string('rekening_name');
             $table->string('type_rekening');
             $table->decimal('saldo', 16, 2);

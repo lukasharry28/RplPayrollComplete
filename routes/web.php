@@ -118,15 +118,9 @@ Route::group(['namespace'=>'Admin','as'=>'admin.'],function(){
 		Route::post('payroll/download-payroll',"PayrollController@payrollExportPDF")->name('payroll.payrollExportPDF');
 		Route::post('payroll/download-payslip',"PayrollController@payslipExportPDF")->name('payroll.payslipExportPDF');
 
-        // Rute untuk tunjangan
-        Route::resource('tunjangan', 'TunjanganController');
-        Route::post('getdata/tunjangan', 'TunjanganController@getData')->name('tunjangan.getData');
-        Route::post('all-delete/tunjangan/', 'TunjanganController@massDelete')->name('tunjangan.massDelete');
-
-        // Rute untuk pajak
-        Route::resource('pajak', 'PajakController');
-        Route::post('getdata/pajak', 'PajakController@getData')->name('pajak.getData');
-        Route::post('all-delete/pajak/', 'PajakController@massDelete')->name('pajak.massDelete');
-
+        //deduction routes
+		Route::resource('rekening','RekeningController');
+		Route::post('getdata/rekening',"RekeningController@getData")->name('rekening.getData');
+		Route::post('all-delete/rekening/',"RekeningController@massDelete")->name('rekening.massDelete');
 	});
 });

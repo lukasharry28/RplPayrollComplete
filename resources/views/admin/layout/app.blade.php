@@ -37,6 +37,8 @@
         <script src="{{ asset('admin_assets/src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.css"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('admin_assets/dist/css/site-style.css') }}">
+
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
         @yield('css')
 
     </head>
@@ -150,7 +152,6 @@
         <script src="{{ asset('admin_assets/plugins/owl.carousel/dist/owl.carousel.min.js')}}"></script>
         <script src="{{ asset('admin_assets/plugins/json-viewer/jquery.json-viewer.js')}}"></script>
         <script src="{{ asset('admin_assets/plugins/jquery.repeater/jquery.form-repeater.min.js')}}"></script>
-        {{-- <script src="http://malsup.github.com/jquery.form.js"></script> --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 
         <script src="{{ asset('admin_assets/plugins/sweetalert/dist/sweetalert.min.js') }}"></script>
@@ -166,6 +167,8 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
         </script>
+
+        <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 
         @yield('js')
     </body>

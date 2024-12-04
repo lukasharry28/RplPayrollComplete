@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('title') Employees @endsection
+@section('title') Rekening @endsection
 
 @section('css')
 <style type="text/css">
@@ -13,11 +13,6 @@
     button.h-33{
       height: 33px !important;
     }
-    #map{
-      height: 500px;
-      border: 2px solid #00000054;
-      border-radius: 11px;
-    }s
 </style>
 @endsection
 
@@ -27,10 +22,10 @@
   <div class="row align-items-end">
     <div class="col-lg-8">
       <div class="page-header-title">
-        <i class="ik ik-users bg-blue"></i>
+        <i class="ik ik-file-minus bg-blue"></i>
         <div class="d-inline">
-          <h5>Employees</h5>
-          <span>You can show and manage Employees from here.</span>
+          <h5>Rekening</h5>
+          <span>You can show and manage Rekening from here.</span>
         </div>
       </div>
     </div>
@@ -41,9 +36,9 @@
             <a href="{{ route('admin.dashboard') }}"><i class="ik ik-home"></i></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{ route('admin.employee.index') }}">Employees</a>
+            <a href="{{ route('admin.rekening.index') }}">Rekening</a>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">List of Employees</li>
+          <li class="breadcrumb-item active" aria-current="page">List of Rekening</li>
         </ol>
       </nav>
     </div>
@@ -59,7 +54,7 @@
         </div>
         <div class="tabs_contant">
           <div class="card-header">
-            <h5>List of Employees</h5>
+            <h5>List of Rekening</h5>
           </div>
           <div class="card-body">
 
@@ -69,7 +64,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="row">
@@ -82,29 +76,35 @@
     </div>
 </div>
 
-<div class="showModel">
+<div class="showBannerModel">
 
 </div>
 
 @endsection
 
 @section('js')
-
 <script type="text/javascript">
 
 $(document).ready(function() {
-
   // get data from serve ajax
   const getDataUrl = "{{ $get_data }}"
   getData(getDataUrl);
 
-
-  //show employee
-  $(document).on('click','a.show-employee',function(){
-    var showUrl = $(this).data('href');
-    showDetails(showUrl);
+  //single record move to trash
+  $(document).on('click','a.move-to-trash',function(){
+    var trashRecordUrl = $(this).data('href');
+    moveToTrashOrDelete(trashRecordUrl);
   });
 
+  //select all checkboxes
+  checkbox("#master",".sub_chk",'#apply');
+
+  //selected record move to trash
+  $(document).on('click','.move-to-trash-all', function(e) {
+    e.preventDefault();
+    var trashAllRecordUrl = $(this).data('href');
+    moveToTrashAllOrDelete(trashAllRecordUrl);
+  });
 });
 </script>
 @endsection

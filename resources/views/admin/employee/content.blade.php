@@ -28,20 +28,14 @@
           <thead>
             <tr>
               <th>Avatar</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Phone</th>
-              <th>Email</th>
+              <th>Name</th>
+              <th>Biodata</th>
+              <th>Kontak</th>
               <th>Position</th>
               <th>Details</th>
-              <th>Publish</th>
+              <th width="40">Status Pegawai</th>
               <th>Actions</th>
-              <th>
-                <div class="custom-control custom-checkbox pl-1 align-self-center">
-                  <input type="checkbox" class="custom-control-input" id="dt-live-select-all">
-                  <label class="custom-control-label" for="dt-live-select-all"></label>
-                </div>
-              </th>
+              <th>Select</th>
             </tr>
           </thead>
           <tbody>
@@ -50,15 +44,28 @@
               <td>
                 <img src="{{ $employee->mediaUrl['thumb'] }}" alt="Avatar" class="table-user-thumb">
               </td>
-              <td>{{ $employee->first_name }}</td>
-              <td>{{ $employee->last_name }}</td>
-              <td>{{ $employee->phone }}</td>
-              <td>{{ $employee->email }}</td>
-              <td>{{ $employee->position->title }}</td>
+              <td>{{ $employee->first_name. ' ' .$employee->last_name }}</td>
               <td>
                 <div>
                   <b>Gender:</b> <span>{{ $employee->gender }}</span><br>
+                  <b>Agama:</b> <span>{{ $employee->agama }}</span><br>
+                  <b>Golongan Darah:</b> <span>{{ $employee->gol_darah }}</span><br>
+                  <b>Tanggal Lahir:</b> <span>{{ $employee->tgl_lahir }}</span><br>
+                  <b>Tempat Lahir:</b> <span>{{ $employee->tmp_lahir }}</span><br>
+                  <b>Status Menikah:</b> <span>{{ $employee->status_nikah }}</span><br>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <b>Phone:</b> <span>{{ $employee->phone }}</span><br>
+                  <b>Email:</b> <span>{{ $employee->email }}</span><br>
+                </div>
+              </td>
+              <td>{{ $employee->position->title }}</td>
+              <td>
+                <div>
                   <b>Employee Id:</b> <span>{{ $employee->employee_id }}</span><br>
+                  <b>Status Kerja:</b> <span>{{ $employee->status_kerja }}</span><br>
                   <b>Schedule:</b>
                     <span>{{ $employee->schedule->time_in }} - {{ $employee->schedule->time_out }}</span><br>
                   <b>Address:</b> <span>{{ $employee->address }}</span><br>
@@ -73,9 +80,9 @@
               </td>
               <td>
                 <div class="table-actions">
-                  <a href="{{ route('admin.employee.show', ['employee_id' => $employee->employee_id]) }}" class="show-employee">
+                  {{--<a href=# "{{ route('admin.employee.show', ['employee_id' => $employee->employee_id]) }}" class="show-employee">
                     <i class="ik ik-eye text-primary"></i>
-                  </a>
+                  </a>  --}}
                   <a href="{{ route('admin.employee.edit', ['employee_id' => $employee->employee_id]) }}">
                     <i class="ik ik-edit-2 text-dark"></i>
                   </a>
@@ -88,12 +95,11 @@
               </td>
               <td>
                 <div class="custom-control custom-checkbox pl-1 align-self-center">
-                  <input type="checkbox"
-                         class="custom-control-input sub_chk"
-                         id="select-{{ $employee->id }}"
-                         data-id="{{ $employee->id }}">
-                  <label class="custom-control-label" for="select-{{ $employee->id }}"></label>
-                </div>
+                   <label class="custom-control custom-checkbox mb-0">
+                     <input type="checkbox" class="custom-control-input sub_chk" data-id="{{$employee->id}}">
+                     <span class="custom-control-label"></span>
+                   </label>
+                 </div>
               </td>
             </tr>
             @empty

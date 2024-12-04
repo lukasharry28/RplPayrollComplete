@@ -30,6 +30,7 @@ class Employee extends Model implements HasMedia
         'status_kerja',
         'position_id',
         'schedule_id',
+        'media_id',
         // 'rate_per_hour',
         'salary',
         'tunjangan_id',
@@ -87,13 +88,16 @@ class Employee extends Model implements HasMedia
             });
     }
 
-    public function position(){
-        return $this->hasOne(Position::class,'id','position_id');
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
     }
 
-    public function schedule(){
-        return $this->hasOne(Schedule::class,'id','schedule_id');
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
     }
+
 
     public function attendances(){
         return $this->hasMany(Attendance::class,'employee_id','id');

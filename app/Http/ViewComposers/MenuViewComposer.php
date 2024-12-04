@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\ViewComposers;
 
-use App\{Position,Admin,Deduction,Schedule,Employee,Attendance};
+use App\{Position,Admin,Deduction,Schedule,Employee,Attendance, Payroll};
 use Illuminate\Contracts\View\View;
 
 class MenuViewComposer {
@@ -16,6 +16,8 @@ class MenuViewComposer {
                 'deductions' => Deduction::count(),
                 'schedules' => Schedule::count(),
                 'employees' => Employee::count(),
+                'attendance' => Attendance::count(),
+                'payroll' => Payroll::count(),
                 'on_time_perc' => $percentage,
                 'on_time_attendance' => Attendance::where(["date"=>date("Y-m-d",time()),"ontime_status"=>1])->count(),
                 'late_attendance' => Attendance::where(["date"=>date("Y-m-d",time()),"ontime_status"=>0])->count(),

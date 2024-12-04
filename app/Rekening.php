@@ -13,6 +13,7 @@ class Rekening extends Model
     protected $fillable = [
         'id_rekening',
         'no_rekening',
+        'nama_pemilik',
         'rekening_name',
         'type_rekening',
         'saldo',
@@ -33,8 +34,9 @@ class Rekening extends Model
     }
 
     public function bank(){
-        return $this->hasOneThrough(Bank::class,'bank_id','bank_id');
+        return $this->belongsTo(Bank::class, 'bank_id');
     }
+
 
     public function debit($amount)
     {
@@ -50,5 +52,16 @@ class Rekening extends Model
         $this->saldo += $amount;
         $this->save();
     }
+
+    public function getMediaUrlAttribute()
+    {
+        $avatar = strtolower($this->attributes['image_name'] . '.png');
+        $url = [
+            'thumb' => url('admin_assets/avatars/bank/' . $avatar),
+            'original' => url('admin_assets/avatars/bank/' . $avatar),
+        ];
+        return $url;
+    }
+
 
 }

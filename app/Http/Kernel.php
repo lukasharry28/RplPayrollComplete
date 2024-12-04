@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cors' => \App\Http\Middleware\Cors::class,
         'RedirectWhenNotLogin' => \App\Http\Middleware\RedirectWhenNotLogin::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
 
     /**

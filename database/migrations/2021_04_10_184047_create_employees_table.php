@@ -20,7 +20,7 @@ class CreateEmployeesTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->enum('gender',['Male','Female','Other']);
-            $table->date('tgl_lahir');
+            $table->string('tgl_lahir');
             $table->text('tmp_lahir');
             $table->string('agama');
             $table->string('gol_darah');
@@ -29,6 +29,7 @@ class CreateEmployeesTable extends Migration
             $table->string('email')->unique();
             $table->text('address')->nullable();
             $table->text('remark')->nullable();
+            $table->unsignedBigInteger('media_id')->nullable();
             $table->string('status_kerja');
             $table->unsignedBigInteger('position_id')->nullable();
             $table->foreign('position_id')

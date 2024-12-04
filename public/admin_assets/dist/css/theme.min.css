@@ -4174,15 +4174,19 @@ a:active {
 }
 
 .table tbody td .table-actions {
-    text-align: right
+    text-align: center;
+    display: flex;
+    align-items: center; /* Vertikal center */
+    justify-content: center; /* Horizontal center */
 }
 
 .table tbody td .table-actions a {
     color: #bcc1c6;
     display: inline-block;
     margin-left: 8px;
-    font-size: 16px
+    font-size: 16px;
 }
+
 
 .badge {
     padding: 6px 10px;
@@ -7961,7 +7965,7 @@ p {
     visibility: visible;
     width: 100%;
     color: #fff;
-    background: #c5114c
+    background: #2168db
 }
 
 .wrapper .page-wrap .app-sidebar.colored .sidebar-header {
@@ -7989,12 +7993,12 @@ p {
 }
 
 .wrapper .page-wrap .app-sidebar.colored .sidebar-content .nav-container .navigation-main .nav-item .submenu-content {
-    background-color: #fff6fb
+    background-color: #edf4ff
 }
 
 .wrapper .page-wrap .app-sidebar.colored .sidebar-content .nav-container .navigation-main .nav-item.open::after,
 .wrapper .page-wrap .app-sidebar.colored .sidebar-content .nav-container .navigation-main .nav-item.active::after {
-    background-color: #fff6fb
+    background-color: #edf4ff
 }
 
 .wrapper .page-wrap .app-sidebar.hide-sidebar {

@@ -29,27 +29,68 @@ class PayrollController extends Controller
         ]);
     }
 
-    public function getDataTable(Request $request)
+    public function getDataTable()
     {
-        $payroll = $this->payroll($request);
+        $payrolls = Payroll::with([
+            'employee.rekening.bank',
+            'employee.position',
+            'employee.tunjangan',
+            'employee.pajak',
+            'employee.deduction'
+        ])->get();
 
-        return Datatables::of($payroll)
-                    ->addIndexColumn()
-                    ->addColumn('employee', function($data){
-                        return "<div class='row'><div class='col-md-3 text-center'><img src='".$data->employee->media_url['thumb']."' class='rounded-circle table-user-thumb'></div><div class='col-md-6 col-lg-6 my-auto'><b class='mb-0'>".$data->employee->first_name." ".$data->employee->last_name."</b><p class='mb-2' title='".$data->employee->employee_id."'><small><i class='ik ik-at-sign'></i>".$data->employee->employee_id."</small></p></div><div class='col-md-4 col-lg-4'><small class='text-muted float-right'></small></div></div>";
-                    })
-                    ->addColumn('gross', function($data){
-                        return number_format($data->employee->gross_amount,2);
-                    })
-                    ->addColumn('deduction', function($data){
-                        return number_format($data->deduction,2);
-                    })
-                    ->addColumn('total_amount', function($data){
-                        return "<b>Rs.".number_format($data->total_amount,2)."</b>";
-                    })
-                    ->rawColumns(['employee','gross','deduction','total_amount'])
-                    ->toJson();
+        return DataTables::of($payrolls)
+            ->addIndexColumn()
+            ->addColumn('id pegawai', function ($data) {
+                return $data->employee_id;
+            })
+            ->addColumn('nama pegawai', function ($data) {
+                return $data->first_name . ' ' . $data->last_name;
+            })
+            ->addColumn('rekening', function ($data) {
+                return "<div>
+                          <b>No Rekening:</b> <span>{$data->employee->rekening->no_rekening}</span><br>
+                          <b>Bank:</b> <span></span>{$data->employee->rekening->bank->bank_name}<br>
+                        </div>";
+            })
+            ->addColumn('posisi', function ($data) {
+                return $data->employee->position->title;
+            })
+            ->addColumn('tanggal pay', function ($data) {
+                return $data->pay_date;
+            })
+            ->addColumn('gaji', function ($data) {
+                return number_format($data->employee->salary, 2);
+            })
+            ->addColumn('tunjangan', function ($data) {
+                return "<div>
+                            <b>Jenis:</b> <span>{$data->employee->tunjangan->title}</span><br>
+                            <b>Nominal:</b> <span>{$data->employee->tunjangan->rate_amount}</span><br>
+                        </div>";
+            })
+            ->addColumn('pajak', function ($data) {
+                return "<div>
+                            <b>Jenis:</b> <span>{$data->employee->pajak->title}</span><br>
+                            <b>Nominal:</b> <span>{$data->employee->pajak->tax_amount}</span><br>
+                        </div>";
+            })
+            ->addColumn('potongan', function ($data) {
+                return "<div>
+                            <b>Jenis:</b> <span>{$data->employee->deduction->name}</span><br>
+                            <b>Nominal:</b> <span>{$data->employee->deduction->amount}</span><br>
+                        </div>";
+            })
+            ->addColumn('status payroll', function ($data) {
+                return $data->payroll_status;
+            })
+            ->addColumn('total gaji', function ($data) {
+                return number_format($data->total_amount, 2);
+            })
+            ->rawColumns(['id pegawai', 'nama pegawai', 'rekening', 'posisi', 'tanggal pay', 'gaji', 'tunjangan', 'pajak', 'potongan', 'status payroll', 'total gaji'])
+            ->toJson();
     }
+
+
 
     public function payrollExportPDF(Request $request)
     {
@@ -79,28 +120,28 @@ class PayrollController extends Controller
         return $pdf->download($fileName);
     }
 
-    private function payroll($request)
-    {
-        $date = explode(' - ', $request->date);
-        $start_date = date("Y-m-d", strtotime($date[0]));
-        $end_date = date("Y-m-d", strtotime($date[1]));
+    // private function payroll($request)
+    // {
+    //     $date = explode(' - ', $request->date);
+    //     $start_date = date("Y-m-d", strtotime($date[0]));
+    //     $end_date = date("Y-m-d", strtotime($date[1]));
 
-        // Get employee IDs who have attendance between the selected date range
-        $attendances = Attendance::whereBetween("date",[$start_date,$end_date])->pluck('employee_id')->toArray();
-        $empIds = array_unique($attendances);
+    //     // Get employee IDs who have attendance between the selected date range
+    //     $attendances = Attendance::whereBetween("date",[$start_date,$end_date])->pluck('employee_id')->toArray();
+    //     $empIds = array_unique($attendances);
 
-        // Retrieve employee data with related models (over time, deduction, attendance)
-        $payrolls = Payroll::with([
-            'employee' => function($q) use ($empIds) {
-                $q->whereIn('id', $empIds);
-            },
-            'deduction',
-            'employee.overtimes',
-            'employee.attendances'
-        ])->whereIn("employee_id", $empIds)->get();
+    //     // Retrieve employee data with related models (over time, deduction, attendance)
+    //     $payrolls = Payroll::with([
+    //         'employee' => function($q) use ($empIds) {
+    //             $q->whereIn('id', $empIds);
+    //         },
+    //         'deduction',
+    //         'employee.overtimes',
+    //         'employee.attendances'
+    //     ])->whereIn("employee_id", $empIds)->get();
 
-        return $payrolls;
-    }
+    //     return $payrolls;
+    // }
 
     public function update(Request $request, $id)
     {
@@ -140,6 +181,6 @@ class PayrollController extends Controller
         return redirect()->route('admin.payroll.index')->with('success', 'Payroll berhasil dihapus!');
     }
 
-    
+
 
 }

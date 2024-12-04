@@ -35,7 +35,7 @@ div.swal2-popup{
 	width:335px !important;
 }
 
-/* .loader{
+.loader{
 	position: absolute;
     top: 0;
     left: 0;
@@ -62,13 +62,13 @@ div.swal2-popup{
     -moz-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-} */
+}
 
-/* .loader i{
+.loader i{
 	font-size: 32px;
     color: #FF0060;
     margin-bottom: 5px;
-} */
+}
 .br-4{
 	border-radius: 4px !important;
 }
@@ -153,6 +153,6 @@ img.circle-temp{
 }
 
 body {
-    background-color: #7B1FA2
+    background-color: #1952e3
 }
 
