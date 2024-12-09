@@ -101,10 +101,15 @@
             <a href="javascript:void(0)"><i class="ik ik-dollar-sign"></i><span>Payroll</span>
             </a>
             <div class="submenu-content">
-                <a href="#" class="menu-item {{ request()->routeIs('admin.attendance.create') ? 'active' : '' }}"><i
+                <a href="{{ route('admin.payrollschedule.create') }}"
+                    class="menu-item {{ request()->routeIs('admin.payrollschedule.create') ? 'active' : '' }}"><i
                         class="ik clock ik-clock"></i>Set Schedule Payroll</a>
-                <a href="#" class="menu-item {{ request()->routeIs('admin.attendance.create') ? 'active' : '' }}"><i
-                        class="ik ik-plus-circle"></i>Set New Payroll</a>
+                <a href="{{ route('admin.payrollschedule.index') }}"
+                    class="menu-item {{ request()->routeIs('admin.payrollschedule.index') ? 'active' : '' }}"><i
+                        class="ik file-text ik-file-text"></i>Jadwal Payroll</a>
+                <a href="{{ route('admin.payroll.create') }}"
+                    class="menu-item {{ request()->routeIs('admin.payroll.create') ? 'active' : '' }}"><i
+                        class="ik ik-plus-circle"></i>Add New Payroll</a>
                 <a href="{{ route('admin.payroll.index') }}"
                     class="menu-item {{ request()->routeIs('admin.payroll.index') ? 'active' : '' }}"><i
                         class="ik file-text ik-file-text"></i>History</a>
@@ -131,11 +136,12 @@
                         class="ik file-text ik-file-text"></i>List Of Rekening</a>
             </div>
         </div>
-        <div class="nav-item {{-- {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}--}}">
-            <a href="{{--  {{ route('admin.profile.index') }} --}}"><i class="ik star ik-star-on"></i><span>Profile Perusahan</span></a>
+        <div class="nav-item {{ request()->routeIs('admin.company.*') ? 'active' : '' }}">
+            <a href=" {{ route('admin.company.index') }}"><i class="ik git-merge ik-git-merge"></i><span>Profile
+                    Perusahan</span></a>
         </div>
-        <div class="nav-item {{-- {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}--}}">
-            <a href="{{--  {{ route('admin.profile.index') }} --}}"><i class="ik star ik-star-on"></i><span>User Admin</span></a>
+        <div class="nav-item {{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
+            <a href=" {{ route('admin.user.index') }}"><i class="ik star ik-star-on"></i><span>User Admin</span></a>
         </div>
         {{-- <div class="nav-item {{ request()->routeIs('admin.company.*') ? 'active' : '' }}">
             <a href="{{ route('admin.company.index') }}"><i class="ik globe ik-globe"></i><span>Company</span></a>

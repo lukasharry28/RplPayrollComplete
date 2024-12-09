@@ -41,11 +41,11 @@
     <div class="col-lg-4 col-md-5">
         <div class="card new-cust-card">
             <div class="card-body">
-                <div class="text-center"> 
-                    <img src="{{ asset('admin_assets/avatars/admin/admin.png') }}" class="rounded-circle" width="150">
+                <div class="text-center">
+                    <img src="{{ asset('admin_assets/avatars/admin/' . strtolower($user['image']) . '.png') }}" class="rounded-circle" width="150">
                     <h4 class="card-title mt-10">{{ $user['name'] }}</h4>
                     <p class="text-dark font-weight-bold">{{ $user['username'] }}</p>
-                    <p class="text-muted">Super Admin</p>
+                    <p class="text-muted">Admin Perusahan</p>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
 
                 <div class="tab-pane fade active show" id="previous-month" role="tabpanel" aria-labelledby="pills-setting-tab">
                     <div class="card-body">
-                        
+
                         @if($errors->any())
                         <div class="alert {{ session()->get('bgcolor') }} text-light alert-dismissible fade show" role="alert">
                             @foreach ($errors->all() as $error)
@@ -75,7 +75,7 @@
 
                         @endif
 
-                        
+
 
                         <form class="form-horizontal" method="post" action="{{ $form_url }}">
                             @csrf
@@ -88,7 +88,12 @@
 
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" placeholder="johnathan@admin.com" class="form-control" id="email" value="{{ $user['email'] }}" readonly>
+                                <input type="email" placeholder="johnathan@admin.com" class="form-control" id="email" value="{{ $user['email'] }}" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <input type="role" placeholder="admin" class="form-control" id="role" value="{{ $user['role'] }}">
                             </div>
 
                             <div class="form-group">

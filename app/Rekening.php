@@ -20,10 +20,16 @@ class Rekening extends Model
         'bank_id'
     ];
 
+    protected $casts = [
+        'saldo' => 'decimal:2',
+    ];
+
     protected $dates = [
         'created_at',
         'updated_at'
     ];
+
+    
 
     public function employees(){
         return $this->hasMany(Employee::class,'id_rekening','id_rekening');

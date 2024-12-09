@@ -184,7 +184,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-6 col-md-6 col-sm-12">
+    {{-- <div class="col-xl-6 col-md-6 col-sm-12">
         <div class="card latest-update-card">
           <div class="card-header">
             <h3>Latest Positions</h3>
@@ -192,7 +192,7 @@
           </div>
           <div class="card-block">
             <div class="scroll-widget">
-              <div class="latest-update-box">
+              <div class="latest-update-box"> --}}
                 {{-- @foreach($schedules as $schedule)
                 <div class="row pt-20 pb-30">
                   <div class="col-auto text-right update-meta pr-0">
@@ -204,11 +204,11 @@
                   </div>
                 </div>
                 @endforeach --}}
-              </div>
+              {{-- </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
   </div>
 </div>
 

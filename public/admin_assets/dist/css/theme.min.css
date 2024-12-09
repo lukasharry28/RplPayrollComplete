@@ -8112,6 +8112,17 @@ p {
     -moz-border-radius: 3px
 }
 
+.wrapper .page-wrap .main-content .card .card-body code.main{
+    background-color: #eee;
+    color: #50b924;
+    margin: 5px;
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px
+}
+
 .wrapper .page-wrap .main-content .card .card-body .list-item-wrap .list-item {
     padding: 13px 20px;
     border: 1px solid #ededed;

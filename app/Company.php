@@ -10,7 +10,7 @@ class Company extends Model
     protected $primaryKey = 'company_id'; // Primary key
     public $incrementing = true; // Pastikan auto-increment aktif
     protected $keyType = 'int'; // Jenis data primary key
-    
+
     protected $fillable = [
         'company_id',
         'company_name',

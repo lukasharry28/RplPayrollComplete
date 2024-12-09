@@ -1,9 +1,8 @@
 @extends('admin.layout.app')
 
-@section('title') Payroll @endsection
+@section('title') User Admin @endsection
 
 @section('css')
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <style type="text/css">
     .overflow-visible{
         overflow: visible !important;
@@ -14,9 +13,6 @@
     button.h-33{
       height: 33px !important;
     }
-    .divHide{
-      display: none;
-    }
 </style>
 @endsection
 
@@ -26,10 +22,10 @@
   <div class="row align-items-end">
     <div class="col-lg-8">
       <div class="page-header-title">
-        <i class="ik ik-dollar-sign bg-blue"></i>
+        <i class="ik ik-file-minus bg-blue"></i>
         <div class="d-inline">
-          <h5>Payroll</h5>
-          <span>You can show and manage Payroll from here.</span>
+          <h5>User Admin</h5>
+          <span>You can show and manage User Admin from here.</span>
         </div>
       </div>
     </div>
@@ -40,9 +36,9 @@
             <a href="{{ route('admin.dashboard') }}"><i class="ik ik-home"></i></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{ route('admin.payroll.index') }}">Payroll</a>
+            <a href="{{ route('admin.user.index') }}">User Admin</a>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">List of Payroll</li>
+          <li class="breadcrumb-item active" aria-current="page">List of User Admin</li>
         </ol>
       </nav>
     </div>
@@ -51,7 +47,6 @@
   <div class="row">
     <div class="col-lg-12 col-md-12 mt-4">
       <div class="card">
-
         <!--Tab content-->
         <div class="loader br-4 hidden">
           <i class="ik ik-refresh-cw loading"></i>
@@ -59,7 +54,7 @@
         </div>
         <div class="tabs_contant">
           <div class="card-header">
-            <h5>List of Payroll</h5>
+            <h5>List of User Admin</h5>
           </div>
           <div class="card-body">
 
@@ -69,7 +64,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="row">
@@ -82,22 +76,35 @@
     </div>
 </div>
 
-<div class="showModel">
+<div class="showBannerModel">
 
 </div>
 
 @endsection
 
 @section('js')
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {
-
   // get data from serve ajax
   const getDataUrl = "{{ $get_data }}"
   getData(getDataUrl);
 
+  //single record move to trash
+  $(document).on('click','a.move-to-trash',function(){
+    var trashRecordUrl = $(this).data('href');
+    moveToTrashOrDelete(trashRecordUrl);
+  });
+
+  //select all checkboxes
+  checkbox("#master",".sub_chk",'#apply');
+
+  //selected record move to trash
+  $(document).on('click','.move-to-trash-all', function(e) {
+    e.preventDefault();
+    var trashAllRecordUrl = $(this).data('href');
+    moveToTrashAllOrDelete(trashAllRecordUrl);
+  });
 });
 </script>
 @endsection

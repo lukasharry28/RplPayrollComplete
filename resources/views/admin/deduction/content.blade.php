@@ -13,7 +13,7 @@
     <thead>
       <tr>
         <th width="2" class="text-center">No.</th>
-        <th width="35" class="text-center">Name</th>
+        <th width="150" class="text-center">Name</th>
         <th width="10" class="text-center">Amount</th>
         <th width="45">Description</th>
         <th width="5">Actions</th>

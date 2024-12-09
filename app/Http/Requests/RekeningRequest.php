@@ -16,7 +16,7 @@ class RekeningRequest extends FormRequest
         $idRekening = $this->route('id_rekening') ?? $this->input('id_rekening');
 
         return [
-            'no_rekening' => 'required|string|max:50|unique:rekenings,no_rekening,' . $idRekening . ',id_rekening',
+            'no_rekening' => 'required|string|max:50',
             'nama_pemilik' => 'required|string|max:255',
             'rekening_name' => 'required|string|max:100',
             'type_rekening' => 'required|string|max:50',
@@ -29,7 +29,7 @@ class RekeningRequest extends FormRequest
     {
         return [
             'no_rekening.required' => 'Nomor rekening wajib diisi.',
-            'no_rekening.unique' => 'Nomor rekening sudah terdaftar.',
+            // 'no_rekening.unique' => 'Nomor rekening sudah terdaftar.',
             'nama_pemilik.required' => 'Nama pemilik wajib diisi.',
             'rekening_name.required' => 'Nama rekening wajib diisi.',
             'type_rekening.required' => 'Tipe rekening wajib diisi.',

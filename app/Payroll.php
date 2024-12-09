@@ -21,7 +21,6 @@ class Payroll extends Model
     protected $dates = [
         'created_at',
         'updated_at',
-        'date',
     ];
 
     protected $casts = [
@@ -43,9 +42,14 @@ class Payroll extends Model
     }
 
     // Relasi dengan model Employee
+    // public function employee()
+    // {
+    //     return $this->belongsTo(Employee::class, 'employee_id', 'id');
+    // }
+
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'employee_id', 'id');
+        return $this->belongsTo(Employee::class, 'employee_id');
     }
 
     // Relasi dengan model Company
@@ -132,4 +136,28 @@ class Payroll extends Model
 
         $this->attributes['total_amount'] = $this->calculateTotalAmount(); // Menghitung dan menyimpan total_amount
     }
+
+    // public function processPayrollTransaction(Payroll $payroll)
+    // {
+    //     $employeeBank = $payroll->employee->rekening;
+    //     $companyBank = $payroll->company->rekening;
+
+    //     if (!$employeeBank || !$companyBank) {
+    //         throw new \Exception("Incomplete bank details for payroll transaction.");
+    //     }
+
+    //     $amount = $payroll->total_amount;
+
+    //     if ($companyBank->saldo < $amount) {
+    //         throw new \Exception("Insufficient balance in company account.");
+    //     }
+
+    //     // Kurangi saldo perusahaan
+    //     $companyBank->saldo -= $amount;
+    //     $companyBank->save();
+
+    //     // Tambahkan saldo karyawan
+    //     $employeeBank->saldo += $amount;
+    //     $employeeBank->save();
+    // }
 }

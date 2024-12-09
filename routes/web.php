@@ -112,15 +112,31 @@ Route::group(['namespace'=>'Admin','as'=>'admin.'],function(){
 		Route::post('all-delete/attendance/',"AttendanceController@massDelete")->name('attendance.massDelete');
 
 		//payroll routes
+        Route::resource('payroll','PayrollController');
 		Route::get('payroll',"PayrollController@index")->name('payroll.index');
 		Route::post('getdata/payroll',"PayrollController@getData")->name('payroll.getData');
 		Route::post('get-payroll-data',"PayrollController@getDataTable")->name('payroll.getDataTable');
 		Route::post('payroll/download-payroll',"PayrollController@payrollExportPDF")->name('payroll.payrollExportPDF');
 		Route::post('payroll/download-payslip',"PayrollController@payslipExportPDF")->name('payroll.payslipExportPDF');
 
-        //deduction routes
+        //jadwalpayroll routes
+        Route::resource('payrollschedule','PayrollScheduleController');
+		Route::get('payrollschedule',"PayrollScheduleController@index")->name('payrollschedule.index');
+		Route::post('getdata/payrollschedule',"PayrollScheduleController@getData")->name('payrollschedule.getData');
+		Route::post('get-payrollschedule-data',"PayrollScheduleController@getDataTable")->name('payrollschedule.getDataTable');
+
+        //rekening routes
 		Route::resource('rekening','RekeningController');
 		Route::post('getdata/rekening',"RekeningController@getData")->name('rekening.getData');
 		Route::post('all-delete/rekening/',"RekeningController@massDelete")->name('rekening.massDelete');
+
+        //company profile route
+		Route::get("/company","CompanyController@index")->name('company.index');
+		Route::post("/company","CompanyController@update")->name('company.update');
+
+        //admin routes
+		Route::resource('user','AdminController');
+		Route::post('getdata/user',"AdminController@getData")->name('user.getData');
+		Route::post('all-delete/user/',"AdminController@massDelete")->name('user.massDelete');
 	});
 });

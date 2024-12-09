@@ -32,6 +32,7 @@ class ProfileController extends Controller
     		$data = [
     			'username' => $request->username,
     			'email' => auth()->user()->email,
+                'role' => $request->role,
     			'password' => $password,
     		];
     		Admin::find(auth()->id())->update($data);

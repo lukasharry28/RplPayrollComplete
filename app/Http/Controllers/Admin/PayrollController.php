@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\{Employee, Payroll, Deduction, Overtime, Attendance, Company};
+use App\{Employee, Payroll, Deduction, Overtime, Attendance, Company, PayrollSchedule};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use DataTables;
 use PDF;
+use LOG;
 
 class PayrollController extends Controller
 {
@@ -14,6 +16,7 @@ class PayrollController extends Controller
 
     public function index()
     {
+        // dd($payrolls);
         return View($this->folder.'index',[
             'get_data' => route($this->folder.'getData'),
         ]);
@@ -21,17 +24,20 @@ class PayrollController extends Controller
 
     public function getData()
     {
+        $payrolls = Payroll::all();
         return View($this->folder.'content',[
             'add_new' => "/",
             'getDataTable' => route($this->folder.'getDataTable'),
             'payroll_url' => route($this->folder."payrollExportPDF"),
             'payslip_url' => route($this->folder."payslipExportPDF"),
+            'payrolls'=>$payrolls,
         ]);
     }
 
     public function getDataTable()
     {
         $payrolls = Payroll::with([
+            'employee',
             'employee.rekening.bank',
             'employee.position',
             'employee.tunjangan',
@@ -39,8 +45,11 @@ class PayrollController extends Controller
             'employee.deduction'
         ])->get();
 
+        Log::debug('Payrolls Data:', ['payrolls' => $payrolls]);
+
+
         return DataTables::of($payrolls)
-            ->addIndexColumn()
+        ->addIndexColumn()
             ->addColumn('id pegawai', function ($data) {
                 return $data->employee_id;
             })
@@ -57,7 +66,7 @@ class PayrollController extends Controller
                 return $data->employee->position->title;
             })
             ->addColumn('tanggal pay', function ($data) {
-                return $data->pay_date;
+                return $data->date;
             })
             ->addColumn('gaji', function ($data) {
                 return number_format($data->employee->salary, 2);
@@ -90,8 +99,6 @@ class PayrollController extends Controller
             ->toJson();
     }
 
-
-
     public function payrollExportPDF(Request $request)
     {
         $payrolls = $this->payroll($request);
@@ -120,28 +127,95 @@ class PayrollController extends Controller
         return $pdf->download($fileName);
     }
 
-    // private function payroll($request)
-    // {
-    //     $date = explode(' - ', $request->date);
-    //     $start_date = date("Y-m-d", strtotime($date[0]));
-    //     $end_date = date("Y-m-d", strtotime($date[1]));
+    public function create()
+    {
+        return view($this->folder . 'create', [
+            'form_store' => route($this->folder.'store'),
+            'employees' => Employee::all(),
+            'companies' => Company::all(),
+            'payschedules' => PayrollSchedule::all(),
+        ]);
+    }
 
-    //     // Get employee IDs who have attendance between the selected date range
-    //     $attendances = Attendance::whereBetween("date",[$start_date,$end_date])->pluck('employee_id')->toArray();
-    //     $empIds = array_unique($attendances);
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'company_id' => 'required|exists:companys,company_id',
+            'date' => 'required|date_format:Y-m-d|after_or_equal:today',
+        ]);
 
-    //     // Retrieve employee data with related models (over time, deduction, attendance)
-    //     $payrolls = Payroll::with([
-    //         'employee' => function($q) use ($empIds) {
-    //             $q->whereIn('id', $empIds);
-    //         },
-    //         'deduction',
-    //         'employee.overtimes',
-    //         'employee.attendances'
-    //     ])->whereIn("employee_id", $empIds)->get();
+        DB::beginTransaction();
+        try {
+            $employee = Employee::findOrFail($validatedData['employee_id']);
+            $company = Company::findOrFail($validatedData['company_id']);
 
-    //     return $payrolls;
-    // }
+            $payroll = new Payroll($validatedData);
+            $payroll->retrieveEmployeeBenefits();
+            $payroll->total_amount = $payroll->calculateTotalAmount();
+            $payroll->payroll_status = 'Pending';
+
+            // if ($company->rekening->saldo < $payroll->total_amount) {
+            //     DB::rollBack();
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'Saldo perusahaan tidak mencukupi untuk membuat payroll.',
+            //         'redirect_to' => route($this->folder.'index')
+            //     ]);
+            // }
+
+            $companySaldo = (float) $company->rekening->saldo;
+            $payrollAmount = (float) $payroll->total_amount;
+            $employeeSaldo = (float) $employee->rekening->saldo;
+
+            // Validasi tipe data angka
+            if (!is_numeric($companySaldo) || !is_numeric($payrollAmount)) {
+                throw new \Exception('Saldo atau total amount bukan angka yang valid.');
+            }
+            if (bccomp($companySaldo,  $payrollAmount, 2) < 0) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Saldo perusahaan tidak mencukupi untuk membuat payroll.',
+                    'redirect_to' => route($this->folder.'index')
+                ]);
+            }
+            $company->load('rekening');
+            // Operasi aritmatika dengan presisi dua desimal
+            $companySaldo = $companySaldo - $payrollAmount;// Kurangi saldo perusahaan
+            $employeeSaldo = $employeeSaldo + $payrollAmount; // Tambahkan saldo ke karyawan
+
+            // Simpan hasil ke objek rekening
+            $rekeningCompany = $company->rekening;
+            $rekeningCompany->saldo = $companySaldo; // Update saldo perusahaan
+            $rekeningCompany->save(); // Simpan ke database
+
+            // Simpan hasil ke objek karyawan
+            $rekeningEmployee = $employee->rekening;
+            $rekeningEmployee->saldo = $employeeSaldo; // Update saldo karyawan
+            $rekeningEmployee->save(); // Simpan ke database
+
+            $company->save();
+            $employee->save();
+            $payroll->save();
+
+
+
+
+            DB::commit();
+            return response()->json([
+                'status' => true,
+                'message' => 'Payroll baru berhasil dibuat.',
+                'redirect_to' => route($this->folder.'index')
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => false, 'message' => 'Error occurred: ' . $e->getMessage()]);
+        }
+    }
+
+
 
     public function update(Request $request, $id)
     {
@@ -149,7 +223,7 @@ class PayrollController extends Controller
         $request->validate([
             'employee_id' => 'required|exists:employees,id',
             'company_id' => 'required|exists:companies,company_id',
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d|after_or_equal:today',
             'payroll_status' => 'required|in:Pending,Success,Failed',
             'payschedule_id' => 'required|exists:payrollschedules,payschedule_id',
         ]);
@@ -180,7 +254,4 @@ class PayrollController extends Controller
         // Redirect atau kembali ke halaman sebelumnya dengan pesan sukses
         return redirect()->route('admin.payroll.index')->with('success', 'Payroll berhasil dihapus!');
     }
-
-
-
 }

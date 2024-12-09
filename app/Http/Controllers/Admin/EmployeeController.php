@@ -58,6 +58,8 @@ class EmployeeController extends Controller
                 return "<div>
                             <b>Phone:</b> <span>{$data->phone}</span><br>
                             <b>Email:</b> <span>{$data->email}</span><br>
+                            <b>No Rekening:</b> <span>{$data->rekening->no_rekening}</span><br>
+                            <b>Bank:</b> <span>{$data->rekening->bank->bank_name}</span><br>
                         </div>";
             })
             ->addColumn('position', function ($data) {
@@ -113,7 +115,7 @@ class EmployeeController extends Controller
             'nik', 'first_name', 'last_name', 'gender', 'tgl_lahir', 'tmp_lahir',
             'agama', 'gol_darah', 'status_nikah', 'phone', 'email',
             'address', 'remark', 'schedule_id', 'status_kerja', 'position_id',
-            'salary', 'is_active', 'tunjangan_id', 'pajak_id', 'id_rekening'
+            'salary', 'is_active', 'tunjangan_id', 'pajak_id', 'deduction_id', 'id_rekening'
         ]);
 
         $employee = Employee::create($data);
@@ -156,7 +158,7 @@ class EmployeeController extends Controller
             'nik', 'first_name', 'last_name', 'gender', 'tgl_lahir', 'tmp_lahir',
             'agama', 'gol_darah', 'status_nikah', 'phone', 'email',
             'address', 'remark', 'schedule_id', 'status_kerja', 'position_id',
-            'salary', 'is_active', 'tunjangan_id', 'pajak_id', 'id_rekening'
+            'salary', 'is_active', 'tunjangan_id', 'pajak_id', 'deduction_id', 'id_rekening'
         ]);
 
         $employee->update($data);

@@ -28,8 +28,8 @@
       <div class="page-header-title">
         <i class="ik ik-dollar-sign bg-blue"></i>
         <div class="d-inline">
-          <h5>Payroll</h5>
-          <span>You can show and manage Payroll from here.</span>
+          <h5>Schedule Payroll</h5>
+          <span>You can show and manage Schedule Payroll from here.</span>
         </div>
       </div>
     </div>
@@ -40,9 +40,9 @@
             <a href="{{ route('admin.dashboard') }}"><i class="ik ik-home"></i></a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{{ route('admin.payroll.index') }}">Payroll</a>
+            <a href="{{ route('admin.payroll.index') }}">Schedule Payroll</a>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">List of Payroll</li>
+          <li class="breadcrumb-item active" aria-current="page">List of Schedule Payroll</li>
         </ol>
       </nav>
     </div>
@@ -59,7 +59,7 @@
         </div>
         <div class="tabs_contant">
           <div class="card-header">
-            <h5>List of Payroll</h5>
+            <h5>List of Schedule Payroll</h5>
           </div>
           <div class="card-body">
 

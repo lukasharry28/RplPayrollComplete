@@ -59,9 +59,12 @@
                 <div>
                   <b>Phone:</b> <span>{{ $employee->phone }}</span><br>
                   <b>Email:</b> <span>{{ $employee->email }}</span><br>
+                  <b>No Rekening:</b> <span>{{ $employee->rekening->no_rekening }}</span><br>
+                  <b>Bank:</b> <span>{{ $employee->rekening->bank->bank_name }}</span><br>
                 </div>
               </td>
-              <td>{{ $employee->position->title }}</td>
+              <td><code class="pc">{{ $employee->position->title }}</code></td>
+              {{-- <td>{{ $employee->position->title }}</td> --}}
               <td>
                 <div>
                   <b>Employee Id:</b> <span>{{ $employee->employee_id }}</span><br>
