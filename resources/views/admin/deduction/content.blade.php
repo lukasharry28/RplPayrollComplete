@@ -74,7 +74,7 @@
         <td>
           <div class="custom-control custom-checkbox pl-1 align-self-center">
             <label class="custom-control custom-checkbox mb-0">
-              <input type="checkbox" class="custom-control-input sub_chk" data-id="{{$deduction->id}}">
+              <input type="checkbox" class="custom-control-input sub_chk" data-id="{{$deduction->deduction_id}}">
               <span class="custom-control-label"></span>
             </label>
           </div>

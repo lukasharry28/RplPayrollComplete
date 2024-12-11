@@ -5,7 +5,12 @@
         <!--Live Overtime Data-->
         <div class="card-header">
             <div class="col-md-3 d-block">
-                <button class="btn btn-sm btn-dark float-left" id="pdfBtnPrintpayroll"><i class="ik ik-printer"></i>PAYROLL</button>
+                {{-- <button class="btn btn-sm btn-dark float-left" id="pdfBtnPrintpayroll"><i
+                        class="ik ik-printer"></i>PAYROLL</button> --}}
+                <button class="btn btn-sm btn-dark float-left" id="pdfBtnPrintpayroll" {{-- data-action=" route('admin.payroll.exportPdf') " --}}>
+                    <i class="ik ik-printer"></i> PAYROLL
+                </button>
+
             </div>
             {{-- <div class="col-md-9">
                 <div class="input-group mb-0">
@@ -40,6 +45,7 @@
                         <th>Potongan</th>
                         <th>Status Payroll</th>
                         <th width="135">Total Gaji</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,6 +95,18 @@
                         </td>
                         <td>{{ $payroll->payroll_status }}</td>
                         <td><code class="main">{{ $payroll->total_amount }}</code></td>
+                        <td>
+                            <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+                                {{-- <a href="{{ route('admin.payroll.edit',['payroll'=>$payroll]) }}" type="button"
+                                    class="btn btn-sm btn-outline-primary">
+                                    <i class="ik edit-2 ik-edit-2"></i>
+                                </a> --}}
+                                <a data-href="{{ route('admin.payroll.destroy',['payroll'=>$payroll]) }}" type="button"
+                                    class="btn btn-sm btn-outline-danger delete">
+                                    <i class="ik trash-2 ik-trash-2"></i>
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                     @empty
                     <tr>
@@ -109,6 +127,11 @@
         @method("POST")
         @csrf
         <input type="text" name="date" id="payslip_date_input">
+    </form> --}}
+    {{-- <form data-action="{{ $payroll_url }}" method="post" id="payrollForm">
+        @method("POST")
+        @csrf
+        <input type="text" name="date" id="payroll_date_input">
     </form> --}}
     <form data-action="{{ $payroll_url }}" method="post" id="payrollForm">
         @method("POST")
@@ -170,44 +193,51 @@ $(document).ready(function() {
     locale: {format: 'MMMM DD, YYYY'},
   });
 
-  var table = $("#payroll_data_table").DataTable({
-    "processing": true,
-    "serverSide": true,
-    "pagingType":"full_numbers",
-    "pageLength":25,
-    "autoWidth": false,
-    "lengthMenu": [ [10, 25, 50, 100,-1], [10, 25, 50,100, "All"] ],
-    "ajax": {
-      "url": "{{ $getDataTable }}",
-      "type": "POST",
-      "data":function( d ) {
-        d.date = $("#date").val();
-      }
-    },
-    "columnDefs": [
-    {
-      'targets': [5],
-      'searchable':false,
-      'orderable':false,
-      "className": "text-left"
-    }
-    // ],
-    //     "columns": [
-    //         { data: 'no', name: 'no' },
-    //         { data: 'employee_id', name: 'employee_id' },
-    //         { data: 'nama_pegawai', name: 'nama_pegawai' },
-    //         { data: 'no_rekening', name: 'no_rekening' },
-    //         { data: 'position', name: 'position' },
-    //         { data: 'pay_date', name: 'pay_date' },
-    //         { data: 'salary', name: 'salary' },
-    //         { data: 'tunjangan', name: 'tunjangan' },
-    //         { data: 'pajak', name: 'pajak' },
-    //         { data: 'potongan', name: 'potongan' },
-    //         { data: 'payroll_status', name: 'payroll_status' },
-    //         { data: 'total_salary', name: 'total_salary' }
-    //     ]
+  var table = $("table#payroll_data_table").DataTable({
+    // "processing": true,
+    // "serverSide": true,
+    // "pagingType": "full_numbers",
+    // "pageLength": 25,
+    // "autoWidth": false,
+    // "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
 
-  });
+    // "ajax": {
+    //     "url": "{{ $getDataTable }}", // Make sure this route is correct
+    //     "type": "POST",
+    //     "data": function(d) {
+    //         d.date = $("#date").val();
+    //         d._token = "{{ csrf_token() }}"; // Add CSRF token
+    //     },
+    //     "error": function(xhr, error, thrown) {
+    //         console.log("DataTables Ajax error:");
+    //         console.log(xhr.responseText);
+    //         console.log(error);
+    //         console.log(thrown);
+    //     }
+    // },
+    // "columnDefs": [
+    //     {
+    //         'targets': [5],
+    //         'searchable': false,
+    //         'orderable': false,
+    //         "className": "text-left"
+    //     }
+    // ],
+    // "columns": [
+    //     { "data": "DT_RowIndex", "name": "no.", "searchable": false },
+    //     { "data": "detail_pegawai", "name": "detail pegawai" },
+    //     { "data": "rekening", "name": "rekening" },
+    //     { "data": "posisi", "name": "posisi" },
+    //     { "data": "tanggal_pay", "name": "tanggal pay" },
+    //     { "data": "gaji", "name": "gaji" },
+    //     { "data": "tunjangan", "name": "tunjangan" },
+    //     { "data": "pajak", "name": "pajak" },
+    //     { "data": "potongan", "name": "potongan" },
+    //     { "data": "status_payroll", "name": "status payroll" },
+    //     { "data": "total_gaji", "name": "total gaji" },
+    //     { "data": "action", "name": "action", "searchable": false, "orderable": false }
+    // ]
+});
 
   var inputDate = $("#date").val();
   $("#payroll_date_input,#payslip_date_input").val(inputDate);
@@ -223,5 +253,4 @@ $(document).ready(function() {
     printForm(formId,$(this));
   });
 });
-
 </script>

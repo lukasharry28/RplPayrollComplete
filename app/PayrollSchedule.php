@@ -15,6 +15,7 @@ class PayrollSchedule extends Model
         'payschedule_id',
         'company_id',
         'payroll_date',
+        'payroll_time',
         'payroll_status',
     ];
 

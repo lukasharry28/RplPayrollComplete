@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Payroll;
-use App\Observer\PayrollObserver;
+use App\Observers\PayrollObserver;
 use Illuminate\Support\ServiceProvider;
 
 class PayrollProvider extends ServiceProvider

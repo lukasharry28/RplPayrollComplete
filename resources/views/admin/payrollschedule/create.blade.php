@@ -58,37 +58,43 @@
                     </div>
                 </div>
 
-                <form action="{{ $form_store }}" method="POST" id="createPayrollschedule">
+                <form action="{{ $form_store }}" method="POST" id="createPayrollSchedule">
                     @csrf
 
-                    <div class="form-group mb-3">
+                    {{-- <div class="form-group mb-3">
                         <label for="company_id">Select Company</label><small class="text-danger">*</small>
                         <select name="company_id" id="company_id" class="form-control" required>
                             <option value="">-- Select Company --</option>
-                            @foreach ($companies as $company)
+                            @foreach ($companys as $company)
                             <option value="{{ $company->company_id }}">{{ $company->company_name }}</option>
                             @endforeach
                         </select>
                         <small class="text-danger err" id="company_id-err">Select the company related to this
                             payroll.</small>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group mb-3">
-                        <label for="date">Payroll Date</label><small class="text-danger">*</small>
-                        <input type="date" name="date" id="date" class="form-control" required
+                        <label for="payroll_date">Payroll Date</label><small class="text-danger">*</small>
+                        <input type="date" name="payroll_date" id="payroll_date" class="form-control" required
                             onchange="validateDate(this)">
-                        <small class="text-danger err" id="date-err">Please enter a valid payroll date.</small>
+                        <small class="text-danger err" id="payroll_date-err">Please enter a valid payroll date.</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="payroll_time">Time In</label><small class="text-danger">*</small>
+                        <input type="text" class="form-control datetimepicker-input" id="payroll_time"
+                            data-toggle="datetimepicker" data-target="#payroll_time" name="payroll_time">
+                        <small class="text-danger err" id="payroll_time-err"></small>
                     </div>
 
-                    <div class="form-group mb-3">
+                    {{-- <div class="form-group mb-3">
                         <label for="payroll_status">Payroll Status</label><small class="text-danger">*</small>
                         <input type="text" name="payroll_status" id="payroll_status" class="form-control" required>
                         <small class="text-danger err" id="payroll_status-err">Enter the payroll status.</small>
-                    </div>
+                    </div> --}}
 
                     <button type="submit" class="btn btn-primary"><i class="ik save ik-save"></i>Submit</button>
                     <button type="reset" class="btn btn-warning">Reset</button>
-                    <a href="{{ route('admin.payroll.index') }}" class="btn btn-light"><i
+                    <a href="{{ route('admin.payrollschedule.index') }}" class="btn btn-light"><i
                             class="ik arrow-left ik-arrow-left"></i> Go Back</a>
                 </form>
             </div>
@@ -101,9 +107,20 @@
 @section('js')
 <script type="text/javascript">
     $(document).ready(function($) {
-        $("#createPayroll").submit(function(event) {
+
+        $('#date').datetimepicker({
+            format: 'LL'
+        });
+        // $('#payroll_time').datetimepicker({
+        //     format: 'LT'
+        // });
+        $('#payroll_time').datetimepicker({
+            format: 'HH:mm' // Format 24 jam
+        });
+
+        $("#createPayrollSchedule").submit(function(event) {
             event.preventDefault();
-            createForm("#createPayroll");
+            createForm("#createPayrollSchedule");
         });
     });
 
@@ -128,6 +145,5 @@
             input.value = '';
         }
     }
-
 </script>
 @endsection

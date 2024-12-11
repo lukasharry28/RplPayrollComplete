@@ -6,9 +6,12 @@ use App\{Employee, Payroll, Deduction, Overtime, Attendance, Company, PayrollSch
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use DataTables;
-use PDF;
+use Yajra\DataTables\DataTables;
+// use Vendor\PDF;
+use Barryvdh\DomPDF\PDF;
+
 use LOG;
+// use Spatie\MediaLibrary\ImageGenerators\FileTypes\Pdf;
 
 class PayrollController extends Controller
 {
@@ -49,12 +52,13 @@ class PayrollController extends Controller
 
 
         return DataTables::of($payrolls)
-        ->addIndexColumn()
-            ->addColumn('id pegawai', function ($data) {
-                return $data->employee_id;
-            })
-            ->addColumn('nama pegawai', function ($data) {
-                return $data->first_name . ' ' . $data->last_name;
+            ->addIndexColumn()
+            ->addColumn('detail pegawai', function ($data) {
+                return "<div>
+                            <span>{{ $data->employee->employee_id }}</span><br>
+                                <b><span>{{ $data->employee->first_name }} </span></b>
+                                <b><span>{{ $data->employee->last_name }}</span></b>
+                        </div>";
             })
             ->addColumn('rekening', function ($data) {
                 return "<div>
@@ -95,37 +99,80 @@ class PayrollController extends Controller
             ->addColumn('total gaji', function ($data) {
                 return number_format($data->total_amount, 2);
             })
-            ->rawColumns(['id pegawai', 'nama pegawai', 'rekening', 'posisi', 'tanggal pay', 'gaji', 'tunjangan', 'pajak', 'potongan', 'status payroll', 'total gaji'])
+            ->addColumn('action', function ($data) {
+                return '<button class="btn btn-sm btn-primary">Edit</button>';
+            })
+
+            ->rawColumns(['detail pegawai', 'rekening', 'posisi', 'tanggal pay', 'gaji', 'tunjangan', 'pajak', 'potongan', 'status payroll', 'total gaji', 'action'])
             ->toJson();
     }
 
-    public function payrollExportPDF(Request $request)
-    {
-        $payrolls = $this->payroll($request);
 
-        $pdf = PDF::loadView($this->folder."export.payroll",[
-            'payrolls'=> $payrolls,
-            'date'=> $request->date,
-            'deduction_amount' => Deduction::sum("amount")
-        ]);
+    public function exportPayrollPDF(Request $request)
+{
+    // Validasi input tanggal
+    $request->validate([
+        'date' => 'required|string'
+    ]);
 
-        $fileName = "payroll-".date("d-M-Y")."-".time().'.pdf';
-        return $pdf->download($fileName);
-    }
+    // Parsing tanggal
+    $dates = explode(' - ', $request->input('date'));
+    $startDate = Carbon::parse($dates[0])->startOfDay();
+    $endDate = Carbon::parse($dates[1])->endOfDay();
 
-    public function payslipExportPDF(Request $request)
-    {
-        $payslips = $this->payroll($request);
+    // Ambil data payroll
+    $payrolls = Payroll::with([
+        'employee',
+        'employee.rekening',
+        'employee.rekening.bank',
+        'employee.position',
+        'employee.tunjangan',
+        'employee.pajak',
+        'employee.deduction'
+    ])
+    ->whereBetween('date', [$startDate, $endDate])
+    ->get();
 
-        $pdf = PDF::loadView($this->folder."export.payslip",[
-            'payrolls'=> $payslips,
-            'date'=> $request->date,
-            'deduction_amount'=> Deduction::sum("amount"),
-        ]);
+    // Generate PDF
+    $pdf = PDF::loadView('admin.payroll.export.payroll', [
+        'payrolls' => $payrolls,
+        'date' => $request->input('date')
+    ])->setPaper('a4', 'landscape');
 
-        $fileName = "payslip-".date("d-M-Y")."-".time().'.pdf';
-        return $pdf->download($fileName);
-    }
+    // Nama file dinamis
+    $fileName = "payroll-" . date("d-M-Y") . ".pdf";
+
+    // Langsung download
+    return $pdf->download($fileName);
+}
+
+
+    // public function payrollExportPDF(Request $request)
+    // {
+    //     $payrolls = $this->payroll($request);
+
+    //     $pdf = PDF::loadView($this->folder."export.payroll",[
+    //         'payrolls'=> $payrolls,
+    //         'date'=> $request->date,
+    //     ]);
+
+    //     $fileName = "payroll-".date("d-M-Y")."-".time().'.pdf';
+    //     return $pdf->download($fileName);
+    // }
+
+    // public function payslipExportPDF(Request $request)
+    // {
+    //     $payslips = $this->payroll($request);
+
+    //     $pdf = PDF::loadView($this->folder."export.payslip",[
+    //         'payrolls'=> $payslips,
+    //         'date'=> $request->date,
+
+    //     ]);
+
+    //     $fileName = "payslip-".date("d-M-Y")."-".time().'.pdf';
+    //     return $pdf->download($fileName);
+    // }
 
     public function create()
     {
@@ -153,7 +200,7 @@ class PayrollController extends Controller
             $payroll = new Payroll($validatedData);
             $payroll->retrieveEmployeeBenefits();
             $payroll->total_amount = $payroll->calculateTotalAmount();
-            $payroll->payroll_status = 'Pending';
+            $payroll->payroll_status = 'Success';
 
             // if ($company->rekening->saldo < $payroll->total_amount) {
             //     DB::rollBack();
@@ -199,9 +246,6 @@ class PayrollController extends Controller
             $employee->save();
             $payroll->save();
 
-
-
-
             DB::commit();
             return response()->json([
                 'status' => true,
@@ -243,15 +287,13 @@ class PayrollController extends Controller
         return redirect()->route('admin.payroll.index')->with('success', 'Payroll berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(Payroll $payroll)
     {
-        // Cari data Payroll yang akan dihapus
-        $payroll = Payroll::findOrFail($id);
-
-        // Hapus data payroll
         $payroll->delete();
-
-        // Redirect atau kembali ke halaman sebelumnya dengan pesan sukses
-        return redirect()->route('admin.payroll.index')->with('success', 'Payroll berhasil dihapus!');
+        return response()->json([
+                'status' => true,
+                'message' => "Your Record has been Deleted!",
+                'getDataUrl' => route($this->folder.'getData'),
+            ]);
     }
 }

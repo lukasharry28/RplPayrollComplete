@@ -6,7 +6,7 @@ use App\{Employee,Overtime};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OvertimeRequest;
-use DataTables;;
+use Yajra\DataTables\DataTables;;
 
 class OvertimeController extends Controller
 {
@@ -52,16 +52,16 @@ class OvertimeController extends Controller
     }
 
     public function create()
-    {   
+    {
         $employees = Employee::get();
         return View($this->folder."create",[
             'form_store' => route($this->folder.'store'),
             'employees' => $employees,
         ]);
     }
-    
+
     public function store(OvertimeRequest $request)
-    {   
+    {
         $data = [
             'title' => $request->title,
             'description' => $request->description,
@@ -79,7 +79,7 @@ class OvertimeController extends Controller
             ]);
     }
 
-    public function show(Overtime $overtime){   
+    public function show(Overtime $overtime){
         abort(404);
     }
 
@@ -113,7 +113,7 @@ class OvertimeController extends Controller
     }
 
     public function destroy(Overtime $overtime)
-    {   
+    {
         $trash = $overtime->delete();
         if($trash){
             return response()->json([

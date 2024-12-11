@@ -119,6 +119,7 @@ Route::group(['namespace'=>'Admin','as'=>'admin.'],function(){
 		Route::post('payroll/download-payroll',"PayrollController@payrollExportPDF")->name('payroll.payrollExportPDF');
 		Route::post('payroll/download-payslip',"PayrollController@payslipExportPDF")->name('payroll.payslipExportPDF');
 
+
         //jadwalpayroll routes
         Route::resource('payrollschedule','PayrollScheduleController');
 		Route::get('payrollschedule',"PayrollScheduleController@index")->name('payrollschedule.index');

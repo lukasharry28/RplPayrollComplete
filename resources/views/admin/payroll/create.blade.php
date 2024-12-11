@@ -148,6 +148,5 @@
             input.value = '';
         }
     }
-
 </script>
 @endsection

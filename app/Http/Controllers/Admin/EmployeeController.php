@@ -6,7 +6,7 @@ use App\{Employee, Schedule, Position, Tunjangan, Rekening, Pajak, Deduction};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
-use DataTables;
+use Yajra\DataTables\DataTables;
 
 class EmployeeController extends Controller
 {

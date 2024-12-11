@@ -1,6 +1,6 @@
 @extends('admin.layout.app')
 
-@section('title') {{ $deduction->title }} - Edit Deduction @endsection
+@section('title') {{ $deduction->name }} - Edit Deduction @endsection
 
 @section('css')
 <style type="text/css">
@@ -100,7 +100,7 @@ $(document).ready(function($) {
   $("#editDeduction").submit(function(event){
     event.preventDefault();
     editForm("#editDeduction");
-  }); 
+  });
 });
 </script>
 @endsection

@@ -6,7 +6,7 @@ use App\{Employee,Attendance};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AttendanceRequest;
-use DataTables;;
+use Yajra\DataTables\DataTables;
 
 class AttendanceController extends Controller
 {

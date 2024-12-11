@@ -18,7 +18,7 @@ class DeductionController extends Controller
             'get_data' => $get_data,
         ]);
     }
-    
+
     public function getData()
     {
         $deductions = Deduction::get();
@@ -83,7 +83,7 @@ class DeductionController extends Controller
 
     public function massDelete(Request $request)
     {
-        $deductions = Deduction::whereIn('id',$request->ids)
+        $deductions = Deduction::whereIn('deduction_id',$request->ids)
                         ->delete();
 
         return response()->json([
