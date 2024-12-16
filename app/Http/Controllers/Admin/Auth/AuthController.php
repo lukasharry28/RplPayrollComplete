@@ -36,7 +36,7 @@ class AuthController extends Controller
 			'email.required' => 'The Email is required.',
 			'email.email' => 'Please enter valid email.',
 		]);
-		
+
 		if($validate->fails()){
 			return Redirect()->back()->with([
 								'status'=>false,
